@@ -4,6 +4,7 @@ from app import app, multiplicar, es_par
 @pytest.fixture
 def client():
     app.config['TESTING'] = True
+    app.config['JSON_AS_ASCII'] = False  # Ensure non-ASCII characters (e.g., ¡) are not escaped in JSON
     with app.test_client() as client:
         yield client
 
