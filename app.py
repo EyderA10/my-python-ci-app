@@ -3,6 +3,12 @@ import datetime
 
 app = Flask(__name__)
 
+# Ensure JSON is not ASCII-escaped (so '¡Hola!' is not '\u00a1Hola')
+try:
+    app.json.ensure_ascii = False  # Flask 2.2+
+except Exception:
+    app.config['JSON_AS_ASCII'] = False  # Older Flask versions
+    
 @app.route('/')
 def home():
     return jsonify({
