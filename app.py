@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 import datetime
 
 app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False  # Ensure non-ASCII characters (e.g., ¡) are not escaped in JSON
 
 @app.route('/')
 def home():
