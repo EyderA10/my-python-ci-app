@@ -1,0 +1,29 @@
+name: Python CI Matrix
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    test-matrix:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: ['3.9', '3.10', '3.11']
+
+        steps:
+        - uses: actions/checkout@v4
+
+        - uses: actions/setup-python@v4
+          with:
+            python-version: ${{ matrix.python-version }}
+
+        - run: pip install -r requirements.txt
+        - run: pytest tests/ -v
+        - name: Run App Verification
+          run: |
+            timeout 10 python app.py &
+            sleep 5
+            curl -f http://localhost:5000/health
